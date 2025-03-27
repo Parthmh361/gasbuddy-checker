@@ -59,7 +59,7 @@ export default function BluetoothManager({
       text: "Connecting...",
       action: "Cancel",
       onClick: onDisconnect,
-      iconClassName: "animate-spin",
+      iconAnimation: "animate-spin",
     },
     connected: {
       icon: CheckCircle,
@@ -86,7 +86,13 @@ export default function BluetoothManager({
     <div className="glass-card p-5 mt-4 animate-fade-in">
       <div className="flex items-center">
         <div className={cn("p-3 rounded-full mr-4", config.bgColor)}>
-          <Icon className={cn(config.color, config.iconClassName)} size={24} />
+          <Icon 
+            className={cn(
+              config.color, 
+              status === "connecting" ? "animate-spin" : ""
+            )} 
+            size={24} 
+          />
         </div>
         
         <div className="flex-1">
