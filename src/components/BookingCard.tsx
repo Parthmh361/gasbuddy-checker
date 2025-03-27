@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { GasPump, ChevronRight, Calendar, Clock, TruckIcon } from "lucide-react";
+import { Fuel, ChevronRight, Calendar, Clock, TruckIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
@@ -58,7 +58,7 @@ export default function BookingCard({
           "p-3 rounded-full mr-4",
           isLowPressure ? "bg-red-100" : "bg-blue-50"
         )}>
-          <GasPump 
+          <Fuel 
             className={cn(
               isLowPressure ? "text-red-500" : "text-blue-500"
             )} 
