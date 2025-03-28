@@ -72,7 +72,7 @@ const Index = ({
         <GaugeMeter
           value={data.pressure}
           percentage={data.pressurePercentage}
-          max={data.maxPressure}
+          max={thresholds.max}
           threshold={{
             critical: thresholds.critical,
             warning: thresholds.warning,
