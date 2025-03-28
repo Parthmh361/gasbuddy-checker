@@ -76,6 +76,7 @@ const Index = () => {
           temperature={data.temperature}
           gasLeakage={data.gasLeakage}
           connected={data.status === "connected"}
+          pressurePercentage={data.pressurePercentage}
         />
         
         {/* Status section */}

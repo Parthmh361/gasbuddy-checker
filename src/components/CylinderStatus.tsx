@@ -1,19 +1,22 @@
 
 import { useState, useEffect } from "react";
-import { Thermometer, AlertTriangle } from "lucide-react";
+import { Thermometer, AlertTriangle, Fuel } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 interface CylinderStatusProps {
   temperature: number;
   gasLeakage: boolean;
   connected: boolean;
+  pressurePercentage?: number; // Add pressure percentage prop
 }
 
 export default function CylinderStatus({
   temperature,
   gasLeakage,
-  connected
+  connected,
+  pressurePercentage = 0
 }: CylinderStatusProps) {
   const [tempColor, setTempColor] = useState("text-blue-500");
   const [tempBg, setTempBg] = useState("bg-blue-100");
@@ -53,6 +56,17 @@ export default function CylinderStatus({
       <h3 className="font-medium text-sm text-center uppercase tracking-wider text-muted-foreground mb-2">
         Cylinder Status
       </h3>
+      
+      {/* Low pressure alert */}
+      {pressurePercentage < 15 && connected && (
+        <Alert variant="destructive" className="mb-4 bg-red-50 text-red-800 border-red-200">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Low Gas Pressure</AlertTitle>
+          <AlertDescription>
+            Gas level is below 15%. Please refill soon to avoid interruption.
+          </AlertDescription>
+        </Alert>
+      )}
       
       {/* Temperature reading */}
       <div className="flex items-center">
