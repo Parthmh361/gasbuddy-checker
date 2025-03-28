@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import GaugeMeter from "@/components/GaugeMeter";
 import BluetoothManager from "@/components/BluetoothManager";
 import BookingCard from "@/components/BookingCard";
+import CylinderStatus from "@/components/CylinderStatus";
 import { useBluetoothData } from "@/hooks/useBluetoothData";
 import { toast } from "sonner";
 
@@ -39,6 +40,15 @@ const Index = () => {
     }
   }, [isLow, data.status]);
 
+  // When gas leakage is detected, trigger notification
+  useEffect(() => {
+    if (data.gasLeakage && data.status === "connected") {
+      toast.error("Gas leakage detected! Check your connections immediately.", {
+        duration: 8000,
+      });
+    }
+  }, [data.gasLeakage, data.status]);
+
   return (
     <main className="min-h-screen px-4 pb-12 pt-4">
       <Header 
@@ -52,6 +62,7 @@ const Index = () => {
         <div className={data.status === "connected" ? "animate-fade-in" : "opacity-40"}>
           <GaugeMeter
             value={data.pressure}
+            percentage={data.pressurePercentage}
             max={data.maxPressure}
             threshold={{
               critical: thresholds.critical,
@@ -59,6 +70,13 @@ const Index = () => {
             }}
           />
         </div>
+        
+        {/* Cylinder status section with temperature and gas leakage */}
+        <CylinderStatus
+          temperature={data.temperature}
+          gasLeakage={data.gasLeakage}
+          connected={data.status === "connected"}
+        />
         
         {/* Status section */}
         <BluetoothManager

@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 interface GaugeMeterProps {
   value: number;
+  percentage: number; // Added percentage value
   max: number;
   threshold: {
     critical: number;
@@ -16,10 +17,11 @@ interface GaugeMeterProps {
 
 export default function GaugeMeter({
   value,
+  percentage,
   max,
   threshold,
   size = "lg",
-  label = "Pressure",
+  label = "Gas Level",
   animate = true,
 }: GaugeMeterProps) {
   const [angle, setAngle] = useState(0);
@@ -28,8 +30,8 @@ export default function GaugeMeter({
   useEffect(() => {
     // Convert value to percentage of max, then to angle
     // Gauge spans from -120 to 120 degrees (240 degree spread)
-    const percentage = Math.min(1, Math.max(0, value / max));
-    const newAngle = -120 + (percentage * 240);
+    const percentageValue = Math.min(1, Math.max(0, value / max));
+    const newAngle = -120 + (percentageValue * 240);
     
     setAngle(newAngle);
   }, [value, max]);
@@ -103,7 +105,7 @@ export default function GaugeMeter({
       <div className="absolute bottom-[-40px] left-0 right-0 text-center">
         <div className="text-sm text-muted-foreground uppercase tracking-wider">{label}</div>
         <div className={cn("pressure-text", getColorClass())}>
-          {value.toFixed(1)} <span className="text-sm">kPa</span>
+          {percentage.toFixed(1)}% <span className="text-sm ml-1">({value.toFixed(1)} kPa)</span>
         </div>
         <div className={cn("text-sm font-medium", getColorClass())}>
           {getStatusText()}
