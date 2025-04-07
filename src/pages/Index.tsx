@@ -66,9 +66,14 @@ const Index = ({
   }, [data.gasLeakage, data.status]);
 
   return (
-    <>
+    <div className="space-y-10 pt-4 pb-8">
       {/* Main gauge */}
-      <div className={data.status === "connected" ? "animate-fade-in" : "opacity-40"}>
+      <div 
+        className={cn(
+          "transition-all duration-500 pt-10",
+          data.status === "connected" ? "opacity-100" : "opacity-40"
+        )}
+      >
         <GaugeMeter
           value={data.pressure}
           percentage={data.pressurePercentage}
@@ -77,16 +82,19 @@ const Index = ({
             critical: thresholds.critical,
             warning: thresholds.warning,
           }}
+          animate={data.status === "connected"}
         />
       </div>
       
       {/* Cylinder status section with temperature and gas leakage */}
-      <CylinderStatus
-        temperature={data.temperature}
-        gasLeakage={data.gasLeakage}
-        connected={data.status === "connected"}
-        pressurePercentage={data.pressurePercentage}
-      />
+      <div className="mt-12">
+        <CylinderStatus
+          temperature={data.temperature}
+          gasLeakage={data.gasLeakage}
+          connected={data.status === "connected"}
+          pressurePercentage={data.pressurePercentage}
+        />
+      </div>
       
       {/* Status section */}
       <BluetoothManager
@@ -119,8 +127,13 @@ const Index = ({
           </button>
         </div>
       )}
-    </>
+    </div>
   );
+};
+
+// Helper function to conditionally join class names
+const cn = (...classes: (string | boolean | undefined)[]) => {
+  return classes.filter(Boolean).join(" ");
 };
 
 export default Index;
